@@ -29,6 +29,7 @@ function generateBill() {
     const customerPhone = document.getElementById('customerPhone').value;
     const customerEmail = document.getElementById('customerEmail').value;
     const paymentStatus = document.getElementById('paymentStatus').value;
+    const paymentMode = document.getElementById('paymentMode').value;
 
     const products = document.querySelectorAll('.product');
     let productDetails = '';
@@ -74,6 +75,7 @@ function generateBill() {
                 <p><strong>Phone:</strong> ${customerPhone}</p>
                 <p><strong>Email:</strong> ${customerEmail}</p>
                 <p><strong>Payment Status:</strong> <span class="payment-status">${paymentStatus}</span></p>
+                <p><strong>Payment Mode:</strong> <span class="payment-status">${paymentMode}</span></p>
             </div>
         </div>
         <p><strong>Invoice Number:</strong> ${invoiceNumber}</p>

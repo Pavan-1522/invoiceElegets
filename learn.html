@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn More - RFID Payment System</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="learn.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">RFID Payment System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="payment.html">Payments details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="withdraw.html">Withdraw details</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Recharge History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="billgen.html">Bill Generator</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="contact.html">Contact & About</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Learn More About Our RFID Payment System</h1>
+    <p class="lead">Find out how our system works, what components are needed, and its benefits.</p>
+  </div>
+  <div class="content-section">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>How It Works</h3>
+        <p>Our RFID payment system uses Radio Frequency Identification (RFID) technology to make transactions fast and secure. The system uses RFID cards or tags that are scanned by RFID readers to authenticate and process payments. This technology enables contactless transactions, making the payment process seamless and efficient.</p>
+      </div>
+      <div class="col-md-6">
+        <h3>Components Needed</h3>
+        <p>To set up an RFID payment system, you'll need the following components:</p>
+        <ul>
+          <li>RFID Cards or Tags</li>
+          <li>RFID Readers</li>
+          <li>Microcontroller (e.g., ESP32, Arduino)</li>
+          <li>Display (e.g., LCD for balance display)</li>
+          <li>Server or Database for transaction logging</li>
+          <li>Power Supply</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <h3>How to Recharge the Card</h3>
+        <p>To recharge an RFID card, you can use the provided web interface. Enter the amount you want to add to the card, and the system will update the card balance accordingly. Ensure that you have a valid payment method linked to your account for the recharge process.</p>
+      </div>
+      <div class="col-md-6">
+        <h3>How to Check Payments</h3>
+        <p>You can check payment details through the transaction history available on the web interface. This section displays all transactions, including successful and failed payments. You can also view details such as the transaction ID, amount, and date of the transaction.</p>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <h3>Where It Is Used</h3>
+        <p>This RFID payment system is versatile and can be used in various settings such as public transportation, vending machines, retail stores, and secure access points. It provides a convenient and efficient way to handle payments and transactions.</p>
+      </div>
+      <div class="col-md-6">
+        <h3>How It Benefits India</h3>
+        <p>The RFID payment system offers several benefits to India, including:</p>
+        <ul>
+          <li>Improved Efficiency: Speedy and efficient transactions reduce wait times and streamline operations.</li>
+          <li>Enhanced Security: Reduces the risk of fraud and errors compared to traditional payment methods.</li>
+          <li>Convenience: Enables contactless payments, making it easier for users to make transactions.</li>
+          <li>Support for Digital Economy: Contributes to the growth of digital payment solutions in India.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <!-- Components Used Section -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Components Used</h3>
+        <div id="componentsCarousel" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#componentsCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#componentsCarousel" data-slide-to="1"></li>
+            <li data-target="#componentsCarousel" data-slide-to="2"></li>
+            <li data-target="#componentsCarousel" data-slide-to="3"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://via.placeholder.com/800x400?text=Payment+Check+1" class="d-block w-100" alt="Component 1">
+            </div>
+            <div class="carousel-item">
+              <img src="https://via.placeholder.com/800x400?text=Payment+Check+1" class="d-block w-100" alt="Component 2">
+            </div>
+            <div class="carousel-item">
+              <img src="https://via.placeholder.com/800x400?text=Payment+Check+1" class="d-block w-100" alt="Component 3">
+            </div>
+            <div class="carousel-item">
+              <img src="https://via.placeholder.com/800x400?text=Payment+Check+1" class="d-block w-100" alt="Component 4">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#componentsCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#componentsCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="container mt-5">
+        <h3>Project Images</h3>
+        <br>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#RechargeDevice" role="tab" aria-controls="home" aria-selected="true">Recharge Device</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#PaymentDevice" role="tab" aria-controls="profile" aria-selected="false">Payment Device</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#RechargeCheck" role="tab" aria-controls="contact" aria-selected="false">RechargeCheck</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#PaymentCheck" role="tab" aria-controls="contact" aria-selected="false">PaymentCheck</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="RechargeDevice" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row mt-5">
+                <div class="col-md-12">
+                  <h3>Recharge Device</h3>
+                  <img src="https://via.placeholder.com/800x400?text=Recharge+device+1" alt="Recharge Device">
+                </div>
+              </div>
+          </div>
+          <div class="tab-pane fade" id="PaymentDevice" role="tabpanel" aria-labelledby="profile-tab">
+            <!-- Payment Device Section -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3>Payment Device</h3>
+                    <img src="https://via.placeholder.com/800x400?text=Payment+Device+1" alt="Payment Device">
+                </div>
+            </div>
+           </div>
+          <div class="tab-pane fade" id="RechargeCheck" role="tabpanel" aria-labelledby="contact-tab">
+            <!-- Recharge Check Section -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3>Recharge Check</h3>
+                    <img src="https://via.placeholder.com/800x400?text=Recharge+Check+1" alt="Recharge History Check">
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="PaymentCheck" role="tabpanel" aria-labelledby="contact-tab">
+            <!-- Paymnet Check Section -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3>Payment Check</h3>
+                    <img src="https://via.placeholder.com/800x400?text=Payment+Check+1" alt="Recharge History Check">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Recharge Device Section -->
+    
+    <!-- Working Section with Video -->
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <h3>How It Works</h3>
+        <p>Watch the video below to see how the RFID payment system operates in real-time.</p>
+        <video width="100%" controls>
+          <source src="videos/working_demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>About Us</h5>
+        <p>We are dedicated to providing secure and efficient RFID payment solutions.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Links</h5>
+        <ul class="list-unstyled">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="payment.html">Payments details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="withdraw.html">Withdraw details</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Recharge History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="billgen.html">Bill Generator</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact & About</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact</h5>
+        <p>Email: support@rfidpaymentsystem.com</p>
+        <p>Phone: (123) 456-7890</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa fa-github"></i></a>
+          <a href="#"><i class="fa fa-instagram"></i></a>
+          <a href="#"><i class="fa fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p class="mt-3">&copy; 2024 RFID Payment System. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Font Awesome for social icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<!-- JavaScript for Animations -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Animation for elements when they come into view
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    });
+
+    document.querySelectorAll('.content-section h3').forEach(section => {
+      observer.observe(section);
+    });
+  });
+
+  // Adding animation classes dynamically
+  document.querySelectorAll('.content-section h3').forEach(element => {
+    element.classList.add('animate', 'fadeIn');
+  });
+
+  document.querySelectorAll('.jumbotron').forEach(element => {
+    element.classList.add('animate', 'slideIn');
+  });
+
+  document.querySelectorAll('.navbar').forEach(element => {
+    element.classList.add('animate', 'fadeIn');
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Animation for elements when they come into view
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    });
+
+    document.querySelectorAll('.content-section h3').forEach(section => {
+      observer.observe(section);
+    });
+  });
+
+  // Adding animation classes dynamically
+  document.querySelectorAll('.content-section h3').forEach(element => {
+    element.classList.add('animate', 'fadeIn');
+  });
+
+  document.querySelectorAll('.jumbotron').forEach(element => {
+    element.classList.add('animate', 'slideIn');
+  });
+
+  document.querySelectorAll('.navbar').forEach(element => {
+    element.classList.add('animate', 'fadeIn');
+  });
+</script>
+</body>
+</html>
