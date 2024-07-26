@@ -98,3 +98,37 @@ body {
     color: #00ff00;
     font-size: 29px;
   }
+  .bill-popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .bill-popup-content {
+    font-family: Arial, sans-serif;
+  }
+  .bill-popup .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  .print-button {
+    margin-top: 20px;
+  }
+  .error-message {
+    color: red;
+    display: none;
+    margin-top: 10px;
+  }
+  .loading {
+    display: none;
+  }
