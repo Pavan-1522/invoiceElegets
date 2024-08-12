@@ -63,6 +63,9 @@ body {
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
+  .close:hover{
+    cursor: pointer;
+  }
   body {
     font-family: Arial, sans-serif;
   }
