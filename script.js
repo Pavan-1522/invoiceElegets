@@ -68,7 +68,7 @@ function generateBill() {
                 <p><strong>Website:</strong> ${companyDetails.website}</p>
                 <p><strong>Contact:</strong> ${companyDetails.contactNumber}</p>
                 <p><strong>Email:</strong> ${companyDetails.email}</p>
-                <p><strong>Email:</strong> ${companyDetails.App_Name}</p>
+                <p><strong>App Name:</strong> <span style="color: red; font-weight: bolder;"> ${companyDetails.App_Name}</span></p>
             </div>
             <div class="customer-details">
                 <h2>Bill To</h2>
