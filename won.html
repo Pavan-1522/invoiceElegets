@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e2e2e2, #ffffff);
+            color: #333;
+            overflow-x: hidden;
+        }
+        .confirmation-card {
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+        }
+        .thank-you {
+            font-size: 30px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .checkmark {
+            width: 120px;
+            height: 120px;
+            background-color: #28a745;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto 20px;
+            animation: scaleUp 0.5s ease forwards;
+        }
+        @keyframes scaleUp {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        .checkmark:after {
+            content: '';
+            position: absolute;
+            top: 30%;
+            left: 25%;
+            width: 45%;
+            height: 20%;
+            border: solid white;
+            border-width: 0 0 6px 6px;
+            transform: rotate(45deg);
+            animation: draw 0.5s ease forwards;
+        }
+        .checkmark:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 55%;
+            width: 25%;
+            height: 6px;
+            background-color: white;
+            transform: rotate(45deg);
+            animation: draw 0.5s ease forwards;
+        }
+        @keyframes draw {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .order-details {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: left;
+            border-top: 2px solid #28a745;
+            padding-top: 20px;
+            line-height: 1.5;
+        }
+        .order-status {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 16px;
+        }
+        .status-item {
+            margin: 10px 0;
+        }
+        .warning {
+            color: #dc3545;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+            color: #777;
+        }
+        .animated {
+            animation: fadeInUp 1s ease-in-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container confirmation-card animated">
+        <div class="checkmark"></div>
+        <h2 class="thank-you">Order Confirmed!</h2>
+        <div class="order-details" id="orderDetails"></div>
+        
+        <div class="order-status">
+            <h5>Order Status:</h5>
+            <div class="status-item">✔️ Order Placed: <strong id="orderPlacedDate"></strong></div>
+            <div class="status-item">✔️ Order Shipped: <strong id="orderShippedDate"></strong></div>
+            <div class="status-item">✔️ Out for Delivery: <strong id="outForDeliveryDate"></strong></div>
+            <div class="status-item">✔️ Delivered: <strong id="deliveredDate"></strong></div>
+        </div>
+        
+        <div class="warning">Please save these details for future use or take a screenshot!</div>
+        <div class="footer">Thank you for shopping with us!</div>
+    </div>
+
+    <script>
+        // Retrieve order details from localStorage
+        const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+        
+        // Display the order details
+        if (orderDetails) {
+            document.getElementById('orderDetails').innerHTML = `
+                <p><strong>Product Name:</strong> ${orderDetails.ProductName}</p>
+                <p><strong>Payment ID:</strong> ${orderDetails.PaymentId}</p>
+                <p><strong>Amount:</strong> ₹${orderDetails.Amount}</p>
+                <p><strong>Customer Name:</strong> ${orderDetails.CustomerName}</p>
+                <p><strong>Email:</strong> ${orderDetails.Email}</p>
+                <p><strong>Contact:</strong> ${orderDetails.Contact}</p>
+                <p><strong>Timestamp:</strong> ${orderDetails.TimeStamp}</p>
+            `;
+            // Update order status dates (use sample dates; replace with dynamic ones if needed)
+            document.getElementById('orderPlacedDate').innerText = '2024-10-30';
+            document.getElementById('orderShippedDate').innerText = '2024-10-31';
+            document.getElementById('outForDeliveryDate').innerText = '2024-11-01';
+            document.getElementById('deliveredDate').innerText = '2024-11-02';
+        } else {
+            document.getElementById('orderDetails').innerHTML = `<p>No order details available.</p>`;
+        }
+    </script>
+</body>
+</html>
