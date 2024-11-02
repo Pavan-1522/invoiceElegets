@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 60px;
+            max-width: 600px;
+            background: #ffffff;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .search-bar {
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+        #order-details {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+        }
+        .tick-mark, .cross-mark {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .tick-mark {
+            color: #28a745;
+        }
+        .cross-mark {
+            color: #dc3545;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        #no-details, #no-internet {
+            display: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        #loader {
+            display: none;
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2>Order Confirmation</h2>
+    <div class="search-bar">
+        <input type="text" id="orderIdInput" class="form-control" placeholder="Enter Order ID">
+        <button onclick="searchOrder()" class="btn btn-primary mt-3">Search</button>
+    </div>
+
+    <div id="loader" class="text-center">
+        <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
+    
+    <div id="no-internet" class="text-center">No Internet Connection. Please check your network.</div>
+
+    <div id="order-success" class="text-center" style="display: none;">
+        <div class="tick-mark">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h4>Payment Successful!</h4>
+    </div>
+
+    <div id="order-failed" class="text-center" style="display: none;">
+        <div class="cross-mark">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <h4>Payment Failed!</h4>
+    </div>
+
+    <div id="order-details" class="table-responsive mt-4">
+        <table class="table table-bordered table-hover">
+            <tbody id="order-info">
+                <!-- Details will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <p id="no-details" class="text-center">No details found for the given Order ID.</p>
+</div>
+
+<script>
+    async function fetchOrderDetails(orderId) {
+        const sheetUrl = 'https://sheets.googleapis.com/v4/spreadsheets/1wwB_CocPuV8H0itjuYRvHpkbKnzdmzwurNyW_aX1lT8/values/Sheet1?key=AIzaSyAV6IaRt5uLoWjImGnVmgxTo_kgYuohyvk';
+        
+        // Show loader and hide error messages
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('no-internet').style.display = 'none';
+
+        try {
+            const response = await fetch(sheetUrl);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            return data.values.find(row => row[0] === orderId);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            document.getElementById('no-internet').style.display = 'block';
+            return null;
+        } finally {
+            // Hide loader
+            document.getElementById('loader').style.display = 'none';
+        }
+    }
+
+    async function searchOrder() {
+        const orderId = document.getElementById('orderIdInput').value;
+        const orderInfo = await fetchOrderDetails(orderId);
+
+        const orderDetailsTable = document.getElementById('order-info');
+        orderDetailsTable.innerHTML = '';
+        document.getElementById('no-details').style.display = 'none';
+        document.getElementById('order-details').style.display = 'none';
+        document.getElementById('order-success').style.display = 'none';
+        document.getElementById('order-failed').style.display = 'none';
+
+        if (orderInfo) {
+            const fields = ["Order ID", "Product Name", "Amount", "Customer Name", "Customer Email", "Customer Contact", 
+                            "Address", "Landmark", "House No.", "City", "State", "Postal Code", "Country", "Payment ID", 
+                            "Payment Status", "Date & Time"];
+            fields.forEach((field, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<th>${field}</th><td>${orderInfo[index]}</td>`;
+                orderDetailsTable.appendChild(row);
+            });
+
+            const paymentStatus = orderInfo[14].toLowerCase();
+            if (paymentStatus === 'success') {
+                document.getElementById('order-success').style.display = 'block';
+            } else if (paymentStatus === 'failed') {
+                document.getElementById('order-failed').style.display = 'block';
+            }
+
+            document.getElementById('order-details').style.display = 'block';
+        } else if (!orderInfo && !document.getElementById('no-internet').style.display) {
+            document.getElementById('no-details').style.display = 'block';
+        }
+    }
+
+    // Event listener for Enter key
+    document.getElementById('orderIdInput').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            searchOrder();
+        }
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

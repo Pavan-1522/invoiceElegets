@@ -7,159 +7,190 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #e2e2e2, #ffffff);
-            color: #333;
-            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #e9ecef;
+            color: #343a40;
+            padding: 20px;
         }
         .confirmation-card {
-            margin: 50px auto;
+            margin: 20px auto;
             padding: 30px;
-            background: #fff;
+            background: #ffffff;
             border-radius: 15px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 600px;
-            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            text-align: center; /* Center the tick mark and text */
         }
         .thank-you {
-            font-size: 30px;
+            font-size: 32px;
             font-weight: bold;
             color: #28a745;
+            margin-top: 10px;
             margin-bottom: 20px;
         }
-        .checkmark {
-            width: 120px;
-            height: 120px;
-            background-color: #28a745;
-            border-radius: 50%;
-            position: relative;
-            margin: 0 auto 20px;
-            animation: scaleUp 0.5s ease forwards;
-        }
-        @keyframes scaleUp {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
-        }
-        .checkmark:after {
-            content: '';
-            position: absolute;
-            top: 30%;
-            left: 25%;
-            width: 45%;
-            height: 20%;
-            border: solid white;
-            border-width: 0 0 6px 6px;
-            transform: rotate(45deg);
-            animation: draw 0.5s ease forwards;
-        }
-        .checkmark:before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 55%;
-            width: 25%;
-            height: 6px;
-            background-color: white;
-            transform: rotate(45deg);
-            animation: draw 0.5s ease forwards;
-        }
-        @keyframes draw {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        .order-details {
+        .table-container {
             margin-top: 20px;
-            font-size: 18px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        .table td {
+            background-color: #f8f9fa;
+            padding: 15px;
             text-align: left;
-            border-top: 2px solid #28a745;
-            padding-top: 20px;
-            line-height: 1.5;
+            vertical-align: middle;
+        }
+        .table tr:nth-child(odd) td {
+            background-color: #f2f2f2;
+        }
+        .status-table {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .status-table th {
+            background-color: #ffc107;
+            color: white;
+            text-align: center;
+        }
+        .status-table td {
+            text-align: left;
+            padding: 12px;
+            font-size: 16px;
+        }
+        .payment-status.success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .payment-status.failed {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
         }
         .order-status {
             margin-top: 20px;
-            text-align: left;
-            font-size: 16px;
+            border: 2px dashed #007bff;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f0f4f8;
         }
-        .status-item {
-            margin: 10px 0;
+        .order-status h5 {
+            color: #007bff;
         }
-        .warning {
-            color: #dc3545;
-            font-size: 16px;
-            margin-top: 20px;
+        .tick-mark {
+            display: inline-block;
+            width: 50px; /* Increased size for visibility */
+            height: 50px;
+            margin-bottom: 10px;
         }
-        .footer {
-            position: absolute;
-            bottom: 10px;
+        .tick {
             width: 100%;
-            font-size: 14px;
-            color: #777;
+            height: 100%;
+            stroke: #28a745;
+            stroke-width: 5;
+            fill: none;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: draw 0.5s forwards;
         }
-        .animated {
-            animation: fadeInUp 1s ease-in-out;
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+        @keyframes draw {
             to {
-                opacity: 1;
-                transform: translateY(0);
+                stroke-dashoffset: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container confirmation-card animated">
-        <div class="checkmark"></div>
-        <h2 class="thank-you">Order Confirmed!</h2>
-        <div class="order-details" id="orderDetails"></div>
-        
-        <div class="order-status">
-            <h5>Order Status:</h5>
-            <div class="status-item">✔️ Order Placed: <strong id="orderPlacedDate"></strong></div>
-            <div class="status-item">✔️ Order Shipped: <strong id="orderShippedDate"></strong></div>
-            <div class="status-item">✔️ Out for Delivery: <strong id="outForDeliveryDate"></strong></div>
-            <div class="status-item">✔️ Delivered: <strong id="deliveredDate"></strong></div>
+    <div class="container confirmation-card">
+        <!-- Animated Tick Mark at the Top -->
+        <div class="tick-mark">
+            <svg viewBox="0 0 24 24" class="tick">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
         </div>
         
-        <div class="warning">Please save these details for future use or take a screenshot!</div>
+        <h2 class="thank-you">Order Confirmed!</h2>
+
+        <!-- Order Details Table -->
+        <div class="table-container">
+            <table class="table table-bordered">
+                <tbody id="orderDetails"></tbody>
+            </table>
+        </div>
+
+        <!-- Order Status Section -->
+        <div class="order-status">
+            <h5>Order Status:</h5>
+            <div class="table-container">
+                <table class="status-table table table-bordered">
+                    <tbody id="orderStatusTable"></tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="footer">Thank you for shopping with us!</div>
     </div>
 
     <script>
         // Retrieve order details from localStorage
         const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
-        
-        // Display the order details
+
+        // Define the payment status styling classes
+        const paymentStatusClass = orderDetails.PaymentStatus === "Success" ? "success" :
+                                  orderDetails.PaymentStatus === "Failed" ? "failed" : "";
+
+        // Order details data population
         if (orderDetails) {
             document.getElementById('orderDetails').innerHTML = `
-                <p><strong>Product Name:</strong> ${orderDetails.ProductName}</p>
-                <p><strong>Payment ID:</strong> ${orderDetails.PaymentId}</p>
-                <p><strong>Amount:</strong> ₹${orderDetails.Amount}</p>
-                <p><strong>Customer Name:</strong> ${orderDetails.CustomerName}</p>
-                <p><strong>Email:</strong> ${orderDetails.Email}</p>
-                <p><strong>Contact:</strong> ${orderDetails.Contact}</p>
-                <p><strong>Timestamp:</strong> ${orderDetails.TimeStamp}</p>
+                <tr><th>Order ID</th><td>${orderDetails.OrderID}</td></tr>
+                <tr><th>Product Name</th><td>${orderDetails.ProductName}</td></tr>
+                <tr><th>Amount</th><td>₹${orderDetails.Amount}</td></tr>
+                <tr><th>Customer Name</th><td>${orderDetails.CustomerName}</td></tr>
+                <tr><th>Email</th><td>${orderDetails.CustomerEmail}</td></tr>
+                <tr><th>Contact</th><td>${orderDetails.CustomerContact}</td></tr>
+                <tr><th>Address Line1</th><td>${orderDetails.AddressLine1}</td></tr>
+                <tr><th>Landmark</th><td>${orderDetails.Landmark}</td></tr>
+                <tr><th>House No</th><td>${orderDetails.HouseNo}</td></tr>
+                <tr><th>City</th><td>${orderDetails.City}</td></tr>
+                <tr><th>State</th><td>${orderDetails.State}</td></tr>
+                <tr><th>Postal Code</th><td>${orderDetails.PostalCode}</td></tr>
+                <tr><th>Country</th><td>${orderDetails.Country}</td></tr>
+                <tr><th>Payment ID</th><td>${orderDetails.PaymentID}</td></tr>
+                <tr><th>Payment Status</th><td class="payment-status ${paymentStatusClass}">${orderDetails.PaymentStatus}</td></tr>
+                <tr><th>Date Time</th><td>${orderDetails.DateTime}</td></tr>
             `;
-            // Update order status dates (use sample dates; replace with dynamic ones if needed)
-            document.getElementById('orderPlacedDate').innerText = '2024-10-30';
-            document.getElementById('orderShippedDate').innerText = '2024-10-31';
-            document.getElementById('outForDeliveryDate').innerText = '2024-11-01';
-            document.getElementById('deliveredDate').innerText = '2024-11-02';
         } else {
-            document.getElementById('orderDetails').innerHTML = `<p>No order details available.</p>`;
+            document.getElementById('orderDetails').innerHTML = `<tr><td colspan="2">No order details available.</td></tr>`;
         }
+
+        // Get the order date from the stored order details
+        const orderDate = new Date(orderDetails.DateTime);
+
+        // Generate status dates dynamically
+        const statusDates = [
+            { status: 'Order Placed', date: new Date(orderDate) },
+            { status: 'Order Shipped', date: new Date(orderDate.setDate(orderDate.getDate() + 1)) },
+            { status: 'Out for Delivery', date: new Date(orderDate.setDate(orderDate.getDate() + 1)) },
+            { status: 'Delivered', date: new Date(orderDate.setDate(orderDate.getDate() + 1)) }
+        ];
+
+        // Populate the order status table with formatted dates
+        document.getElementById('orderStatusTable').innerHTML = statusDates.map(status => `
+            <tr>
+                <td>${status.status}</td>
+                <td><strong>${status.date.toDateString()}</strong></td>
+            </tr>
+        `).join('');
     </script>
 </body>
 </html>

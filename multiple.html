@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegets Electronics - E-commerce</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .product-card {
+            transition: transform 0.3s ease;
+            margin: 15px;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .product-price {
+            font-size: 24px;
+            color: #28a745;
+        }
+        .order-btn {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .order-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Elegets Electronics Products</h1>
+        <div class="row">
+            <!-- Real Product Example -->
+            <div class="col-md-4">
+                <div class="card product-card text-center">
+                    <div class="card-body">
+                        <h2 class="product-title">Wireless Earbuds</h2>
+                        <p class="product-price">Price: ₹1</p>
+                        <button class="btn order-btn mt-3" onclick="showCustomerForm('Wireless Earbuds', 1)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card product-card text-center">
+                    <div class="card-body">
+                        <h2 class="product-title">Smartwatch</h2>
+                        <p class="product-price">Price: ₹2999</p>
+                        <button class="btn order-btn mt-3" onclick="showCustomerForm('Smartwatch', 2999)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card product-card text-center">
+                    <div class="card-body">
+                        <h2 class="product-title">Bluetooth Speaker</h2>
+                        <p class="product-price">Price: ₹1499</p>
+                        <button class="btn order-btn mt-3" onclick="showCustomerForm('Bluetooth Speaker', 1499)">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Customer Details Form -->
+    <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="customerModalLabel">Enter Customer and Shipping Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="customerForm">
+                        <div class="form-group">
+                            <label for="customerName">Name</label>
+                            <input type="text" class="form-control" id="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerEmail">Email</label>
+                            <input type="email" class="form-control" id="customerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerContact">Contact</label>
+                            <input type="text" class="form-control" id="customerContact" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressLine1">Address Line 1</label>
+                            <input type="text" class="form-control" id="addressLine1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="landmark">Landmark</label>
+                            <input type="text" class="form-control" id="landmark">
+                        </div>
+                        <div class="form-group">
+                            <label for="houseNo">House No</label>
+                            <input type="text" class="form-control" id="houseNo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCity">City</label>
+                            <input type="text" class="form-control" id="customerCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerState">State</label>
+                            <input type="text" class="form-control" id="customerState" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPostalCode">Postal Code</label>
+                            <input type="text" class="form-control" id="customerPostalCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerCountry">Country</label>
+                            <input type="text" class="form-control" id="customerCountry" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="proceedToPayment()">Proceed to Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Confirmation or Error Message -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Order Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalMessage">
+                    <!-- Message will be dynamically set -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let selectedProduct = {};
+
+        function generateOrderId() {
+            const randomId = Math.floor(Math.random() * 100000); // Generates a number between 0 and 99999
+            return 'EE' + randomId.toString().padStart(5, '0'); // Ensures it's always 5 digits, padded with leading zeros
+        }
+
+        function showCustomerForm(productName, price) {
+            selectedProduct = { name: productName, price: price * 100 };
+            $('#customerModal').modal('show');
+        }
+
+        function proceedToPayment() {
+            const customerName = document.getElementById("customerName").value;
+            const customerEmail = document.getElementById("customerEmail").value;
+            const customerContact = document.getElementById("customerContact").value;
+            const addressLine1 = document.getElementById("addressLine1").value;
+            const landmark = document.getElementById("landmark").value;
+            const houseNo = document.getElementById("houseNo").value;
+            const customerCity = document.getElementById("customerCity").value;
+            const customerState = document.getElementById("customerState").value;
+            const customerPostalCode = document.getElementById("customerPostalCode").value;
+            const customerCountry = document.getElementById("customerCountry").value;
+            const orderId = generateOrderId();
+
+            const options = {
+                key: "rzp_test_qh1QueXAt3cInA",
+                amount: selectedProduct.price,
+                currency: "INR",
+                name: "Elegets Electronics",
+                description: `Payment for ${selectedProduct.name}`,
+                handler: function(response) {
+                    const timestamp = new Date().toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true // Use 12-hour format
+                    });
+                    const paymentData = {
+                        data: [{
+                            OrderID: orderId,
+                            ProductName: selectedProduct.name,
+                            Amount: selectedProduct.price / 100,
+                            CustomerName: customerName,
+                            CustomerEmail: customerEmail,
+                            CustomerContact: customerContact,
+                            AddressLine1: addressLine1,
+                            Landmark: landmark,
+                            HouseNo: houseNo,
+                            City: customerCity,
+                            State: customerState,
+                            PostalCode: customerPostalCode,
+                            Country: customerCountry,
+                            PaymentID: response.razorpay_payment_id,
+                            PaymentStatus: "Success",
+                            DateTime: timestamp
+                        }]
+                    };
+                    const orderDetails = {
+                        OrderID: orderId,
+                        ProductName: selectedProduct.name,
+                        Amount: selectedProduct.price / 100,
+                        CustomerName: customerName,
+                        CustomerEmail: customerEmail,
+                        CustomerContact: customerContact,
+                        AddressLine1: addressLine1,
+                        Landmark: landmark,
+                        HouseNo: houseNo,
+                        City: customerCity,
+                        State: customerState,
+                        PostalCode: customerPostalCode,
+                        Country: customerCountry,
+                        PaymentID: response.razorpay_payment_id,
+                        PaymentStatus: "Success",
+                        DateTime: timestamp
+                    }
+                    localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+
+                    // Send the payment data to Google Sheets
+                    fetch('https://sheetdb.io/api/v1/dwae37qdbw3vf', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(paymentData),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = "won.html";
+                        } else {
+                            throw new Error('Network response was not ok.');
+                        }
+                    })
+                    .then(() => {
+                        $('#confirmationModal').modal('show');
+                    })
+                    .catch(error => {
+                        document.getElementById("modalMessage").innerText = `Error: ${error.message}`;
+                        $('#confirmationModal').modal('show');
+                    });
+                },
+                prefill: {
+                    name: customerName,
+                    email: customerEmail,
+                    contact: customerContact,
+                },
+                theme: {
+                    color: "#28a745"
+                }
+            };
+
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+            $('#customerModal').modal('hide');
+        }
+    </script>
+</body>
+</html>
