@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recharge Details - rfid_payment-system</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="withdraw.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">RFID Payment System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="payment.html">Payments details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="withdraw.html">Withdraw details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="recharge.html">Recharge History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="billgen.html">Bill Generator</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://pavan-1522.github.io/portfoilo/index.html">Contact & About</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="text-center">Recharge Details</h1>
+  <p style="color: red; font-size: 25px;">Test : use id 81669d40</p>
+  <form id="deviceForm" class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+      <input type="text" class="form-control" id="deviceId" placeholder="Enter Card UID">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Get Details</button>
+  </form>
+  <div class="error-message" id="errorMessage">Enter a valid Card UID</div>
+  <button id="sortButton" class="btn btn-success btn-sort">Sort by Date</button>
+  <div class="loading" id="loading">
+    <div class="preloader"></div>
+    <p>Loading...</p>
+  </div>
+  <div id="results">
+    <table id="deviceTable" class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Card UID</th>
+          <th>Recharge Amount</th>
+          <th>Shop name</th>
+          <th>Payment ID</th>
+          <th>Status</th>
+          <th>Bill</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="noDetails" class="no-details" style="display: none;">No details found for this Card UID.</div>
+  </div>
+</div>
+
+<!-- Popup for displaying the bill -->
+<div id="billPopup" class="bill-popup">
+  <span class="close" onclick="closePopup()">&times;</span>
+  <div class="bill-popup-content" id="billPopupContent"></div>
+  <button class="btn btn-primary print-button" onclick="printBill()">Print</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script>
+  document.getElementById('deviceForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const deviceId = document.getElementById('deviceId').value.trim();
+
+    if (!deviceId) {
+      document.getElementById('errorMessage').style.display = 'block';
+    } else {
+      document.getElementById('errorMessage').style.display = 'none';
+      fetchData(deviceId);
+    }
+  });
+
+  document.getElementById('sortButton').addEventListener('click', function() {
+    sortTableByDate();
+  });
+
+  async function fetchData(deviceId) {
+    const apiKey = 'AIzaSyDZclzbUHkrICz7XKDFCoGDLNP_-ZjlOvg'; // Replace with your API key
+    const sheetId = '1OvGcSasOjdhHYa0D8DwXK_XlB-RleKJsJiuR7_m-hjU'; // Replace with your Google Sheet ID
+    const range = 'Sheet1!A:F'; // Adjust range according to your sheet
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
+    document.getElementById('loading').style.display = 'block'; // Show loading symbol
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const rows = data.values || [];
+      const tbody = document.querySelector('#deviceTable tbody');
+      tbody.innerHTML = '';
+      let found = false;
+
+      rows.forEach(row => {
+        if (row[1] === deviceId || deviceId === '') { // Assuming Device ID is in the second column (index 1)
+          found = true;
+          const tr = document.createElement('tr');
+          row.forEach((cell, index) => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            if (index === 5) { // Assuming Status is in the sixth column (index 5)
+              if (cell === 'Recharge Successful') {
+                td.classList.add('status-settled');
+              } else {
+                td.style.backgroundColor = '#f92f2f'; // Error color
+                td.style.color = '#fff';
+              }
+            }
+            tr.appendChild(td);
+          });
+
+          // Add the "View Bill" button
+          const billTd = document.createElement('td');
+          if (row[5] === 'Recharge Successful') {
+            const button = document.createElement('button');
+            button.textContent = 'View Bill';
+            button.classList.add('btn', 'btn-warning');
+            button.addEventListener('click', () => viewBill(row));
+            billTd.appendChild(button);
+          } else if (row[5] === 'Recharge Failed') {
+            billTd.textContent = 'Payment Failed';
+            billTd.classList.add('text-danger');
+          }
+          tr.appendChild(billTd);
+
+          tbody.appendChild(tr);
+        }
+      });
+
+      document.getElementById('noDetails').style.display = found ? 'none' : 'block';
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      document.getElementById('loading').style.display = 'none'; // Hide loading symbol
+    }
+  }
+
+  function viewBill(row) {
+    // Base64 encoded images
+    const logoBase64 = '';
+    const stampBase64 = '';
+    // Create bill content
+    const billContent = `
+      <div>
+        <img id="logoImg" src="${logoBase64}" alt="Logo" style="width: 100px; height: auto;">
+        <h2>Payment Bill</h2>
+        <p>Date: ${row[0]}</p>
+        <p>card UID: ${row[1]}</p>
+        <p>Recharge Amount: <strong style="color: red; font-size: 20px;">${row[2]}</strong></p>
+        <p>Shop Name: ${row[3]}</p>
+        <p>Payment Id: ${row[4]}</p>
+        ${row[5] === 'Recharge Successful' ? `
+          <p>Payment Status: <strong style="color: green; font-size: 25px;">${row[5]}</strong></p>
+          <img id="stampImg" src="${stampBase64}" alt="Payment Settled Stamp" style="style="width: 337.657958984375px; height: 295.75555419921875">
+        ` : `
+          <p>Payment Status: Error</p>
+          <img id="stampImg" src="${stampBase64}" alt="Payment Error Stamp" style="width: 150px; height: auto;">
+        `}
+      </div>
+    `;
+
+    const billPopupContent = document.getElementById('billPopupContent');
+    billPopupContent.innerHTML = billContent;
+
+    // Show the popup
+    const billPopup = document.getElementById('billPopup');
+    billPopup.style.display = 'block';
+  }
+
+  function closePopup() {
+    const billPopup = document.getElementById('billPopup');
+    billPopup.style.display = 'none';
+  }
+
+  function printBill() {
+    const billPopupContent = document.getElementById('billPopupContent').innerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Bill</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 20px;
+            }
+            h2 {
+              text-align: center;
+            }
+            p {
+              margin: 5px 0;
+            }
+            img {
+              display: block;
+              margin: 10px auto;
+            }
+          </style>
+        </head>
+        <body onload="window.print(); window.close();">
+          ${billPopupContent}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  }
+
+  function sortTableByDate() {
+    const table = document.getElementById('deviceTable');
+    const tbody = table.querySelector('tbody');
+    const rowsArray = Array.from(tbody.rows);
+
+    rowsArray.sort((rowA, rowB) => {
+      const dateA = new Date(rowA.cells[0].textContent);
+      const dateB = new Date(rowB.cells[0].textContent);
+      return dateB - dateA;
+    });
+
+    rowsArray.forEach(row => tbody.appendChild(row));
+  }
+
+  // Remove any query string parameters to prevent showing details on refresh
+  if (window.history.replaceState) {
+    const url = new URL(window.location);
+    url.search = '';
+    window.history.replaceState({}, document.title, url);
+  }
+
+  // Initial data fetch (optional)
+  // fetchData('');
+</script>
+<!-- Footer -->
+<footer class="footer">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>About Us</h5>
+          <p>This project dedicated to providing secure and efficient RFID payment solutions.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Links</h5>
+          <ul class="list-unstyled">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="payment.html">Payments details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="withdraw.html">Withdraw details</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="recharge.html">Recharge History</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="billgen.html">Bill Generator</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://pavan-1522.github.io/portfoilo/index.html">Contact & About</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Contact</h5>
+          <p>Email: info@example.com</p>
+          <p>Phone: (123) 456-7890</p>
+          <div class="social-icons">
+            <a href="https://github.com/Pavan-1522"><i class="fa fa-github"></i></a>
+            <a href="https://www.instagram.com/its___me.___pavan.__/"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/pavan-kumar-madeti-029135217"><i class="fa fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p class="mt-3">&copy; 2024 RFID Payment System. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -111,10 +111,11 @@ function generateBill() {
 }
 
 function downloadBill() {
+    const invoiceNumber = document.getElementById('invoiceNumber').value;
     const element = document.getElementById('bill');
     const opt = {
         margin: [0.5, 0.5],
-        filename: 'bill.pdf',
+        filename: invoiceNumber+'_Bill.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
